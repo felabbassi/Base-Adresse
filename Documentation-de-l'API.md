@@ -1,5 +1,3 @@
-# API Base Adresse Locale
-
 ## Objectif
 
 Cette API a pour vocation de permettre la gestion de bases d'adresses à l'échelon local, habituellement au niveau commune ou intercommunalité.
