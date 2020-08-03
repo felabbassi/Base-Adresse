@@ -114,14 +114,16 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 | nom      | ✅ | _Optionnel_ |
 | description | ✅ | _Optionnel_ |
 | emails    | ✅ | Tableau devant toujours contenir au moins une valeur. |
-| token     | ❌ | Généré par l'application. Renouvelable via URL dédiée.
-| communes  | ⚠️ | Éditable via routes spécifiques
+| token     | ❌ | Généré par l'application. Renouvelable via URL dédiée. |
+| communes  | ⚠️ | Éditable via routes spécifiques |
+| enableComplement | ✅ | Active la saisie du complément de nom de voie dans l'éditeur
 
 ### Voie
 
 | Attributs | Éditable | Commentaire
 | --------- | -------- | -----------
 | nom       | ✅       |
+| complement | ✅      | Complément de nom de voie (nom du lieu-dit, commune déléguée…). Champ optionnel.
 | code      | ❌       | Code FANTOIR ou séquence libre (= `null` pour le moment)
 | commune   | ❌       | Référence
 | numeros   | ⚠️       | Éditable via routes spécifiques
