@@ -111,7 +111,7 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 
 | Attributs | Éditable | Commentaire |
 | --------- | -------- | ----------- |
-| nom      | ✅ | _Optionnel_ |
+| nom      | ✅ | Nom de la Base Adresse Locale |
 | emails    | ✅ | Tableau devant toujours contenir au moins une valeur. |
 | token     | ❌ | Généré par l'application. Renouvelable via URL dédiée. |
 | communes  | ⚠️ | Éditable via routes spécifiques |
