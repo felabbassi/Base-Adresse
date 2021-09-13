@@ -17,6 +17,7 @@ Ensuite il peut gérer les voies (et toponymes), les numéros et les positions a
 - Un numéro est associé à une seule voie.
 - Un numéro peut avoir plusieurs positions.
 - Une position est associé à un seul numéro ou à une seule voie (dans le cas d'une voie-toponyme).
+- Une parcelle est associée à une ou plusieurs adresses. 
 
 Une base locale peut être publiée, ou exportée au format BAL/AITF 1.1.
 
@@ -38,11 +39,39 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 - `POST` : Créer une base locale
 - `GET` : Lister les bases locales ou rechercher parmi les bases locales
 
+### `/bases-locales/create-demo`
+
+- `POST` : Créer une base locale de démonstration
+
+### `/bases-locales/search`
+
+- `GET` : Retourne une base locale à partir d'un code commune et d'une adresse électronique.
+
+### `/base-locale/recovery`
+
+- `POST` : Renvoie un jeton d'administration à l’adresse électronique fournie par l’utilisateur.
+
+### `/bases-locale/{id}/numeros/batch`
+
+- `POST` : Modifie les numéros par lot.
+
+### `/bases-locale/{id}/communes/{id}/toponymes`
+
+- `POST` : Ajoute un toponyme.
+- `GET` : Retourne les toponymes d’une base adresse.
+
+### `/bases-locales/{id}/communes/{id}/parcelles`
+- `GET` : Retourne les parcelles d’une commune.
+
 ### `/bases-locales/{id}`
 
 - `GET` : Récupérer les information de la base locale
 - `PUT` : Modifier la base locale
 - `DELETE` : Supprimer la base locale
+
+### `/bases-locales/{id}/transform-to-draft`
+
+- `POST` : Transforme une base locale de démonstration en brouillon, dans le cas où l’utilisateur souhaiterait conserver une base-adresse créée en mode démonstration.
 
 ### `/bases-locales/{id}/token/renew`
 
@@ -91,12 +120,24 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 - `POST` : Créer un numéro dans la voie
 - `GET` : Récupérer la liste des numéros d'une voie
 
+### `/voies/{id}/batch`
+- `POST` : Modifie des voies par lot.
+
 ### `/numeros/{id}`
 
 - `GET` : Retourner les informations d'un numéro de voie
 - `PUT` : Modifier un numéro de voie
 - `DELETE` : Supprimer un numéro de voie
 
+### `/toponymes/{id}`
+
+- `GET` : Retourne les informations d’un toponyme.
+- `POST` : Ajoute un toponyme.
+- `DELETE` : Supprime un toponyme.
+
+### `/toponymes/{id}/numeros`
+
+- `GET` : Retourne les numéros d’un toponyme.
 ## Modèles
 
 ### Champs communs
@@ -138,7 +179,10 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 | numero    | ✅       |`9` (Integer)
 | suffixe   | ✅       |`bis`
 | numeroComplet | ❌ | `9` + `bis` => `9bis`
+| comment | ✅ | Complément pour l’édition des adresse. Champs optionnel.
+| parcelles | ✅ | Tableau des parcelles du numéro.
 | positions | ✅       |
+| certifie | ✅ | Booléen qui précise si l’adresse est certifié par la commune ([Lien vers la documentation](https://guide.mes-adresses.data.gouv.fr/publier-une-base-adresse-locale-1/certifier-ses-adresses))
 | _bal | ❌ | Référence |
 
 ### Position
@@ -148,6 +192,14 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 | point | ✅       | Point GeoJSON
 | source      | ✅       | Texte libre. Optionnel
 | type        | ✅       | `entrée`, `délivrance postale`, `bâtiment`, `cage d'escalier`, `logement`, `parcelle`, `segment`, `'service technique`
+
+### Toponyme
+
+| Attributs   | Éditable | Commentaire
+| ---------   | -------- | -----------
+| nom | ✅ | Nom du toponyme
+| positions | ✅ | Tableaux des positions du toponyme
+| parcelles | ✅ | Tableaux des parcelles du toponyme
 
 ## Publication d'une base locale
 
