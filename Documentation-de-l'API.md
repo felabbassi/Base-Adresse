@@ -45,41 +45,25 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 
 ### `/bases-locales/search`
 
-- `GET` : Retourne une base locale à partir d'un code commune et d'une adresse électronique.
+- `GET` : Retourner les bases locales associées à une adresse électronique et un code commune.
 
 ### `/base-locale/recovery`
 
-- `POST` : Renvoie un jeton d'administration à l’adresse électronique fournie par l’utilisateur.
-
-### `/bases-locale/{id}/numeros/batch`
-
-- `POST` : Modifie les numéros par lot.
-
-### `/bases-locale/{id}/communes/{id}/toponymes`
-
-- `POST` : Ajoute un toponyme.
-- `GET` : Retourne les toponymes d’une base adresse.
-
-### `/bases-locales/{id}/communes/{id}/parcelles`
-- `GET` : Retourne les parcelles d’une commune.
+- `POST` : Envoi par courriel les bases locales ainsi que leurs jetons d'administration associées à l’adresse électronique indiquée
 
 ### `/bases-locales/{id}`
 
-- `GET` : Récupérer les information de la base locale
+- `GET` : Retourne les informations de la base locale
 - `PUT` : Modifier la base locale
 - `DELETE` : Supprimer la base locale
 
 ### `/bases-locales/{id}/transform-to-draft`
 
-- `POST` : Transforme une base locale de démonstration en brouillon, dans le cas où l’utilisateur souhaiterait conserver une base-adresse créée en mode démonstration.
+- `POST` : Transforme une base locale de démonstration en brouillon, dans le cas où l’utilisateur souhaiterait conserver une base-adresse créée en mode démonstration
 
 ### `/bases-locales/{id}/token/renew`
 
-- `POST` : Renouveler le jeton de sécurité
-
-### `/bases-locales/{id}/token/reinit`
-
-- `POST` : Envoyer la procédure de réinitialisation du jeton par email
+- `POST` : Réinitialisation du jeton de la base locale et envoi du nouveau jeton par courriel
 
 ### `/bases-locales/{id}/upload`
 
@@ -89,12 +73,15 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 
 - `GET` : Récupérer la base locale au format CSV
 
-
 ### `/bases-locales/{id}/communes/{codeCommune}`
 
 - `GET` : Retourne (et calcule) les informations pertinentes à l'échelle d'une commune
 - `PUT` : Ajouter une commune à la base locale
 - `DELETE` : Supprimer une commune de la base locale
+
+### `/bases-locales/{id}/communes/{codeCommune}/batch`
+
+- `POST` : Modifier les numéros d’une commune par lot
 
 ### `/bases-locales/{id}/communes/{codeCommune}/populate`
 
@@ -109,6 +96,19 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 - `POST` : Créer une voie dans la commune
 - `GET` : Lister les voies d'une commune
 
+### `/bases-locale/{id}/communes/{id}/toponymes`
+
+- `POST` : Ajouter un toponyme
+- `GET` : Retourne les toponymes d’une base locale
+
+### `/bases-locales/{id}/communes/{id}/parcelles`
+
+- `GET` : Retourne les parcelles d’une commune
+
+### `/bases-locale/{id}/numeros/batch`
+
+- `POST` : Modifier les numéros par lot
+
 ### `/voies/{id}`
 
 - `GET` : Retourner les informations concernant une voie
@@ -118,10 +118,11 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 ### `/voies/{id}/numeros`
 
 - `POST` : Créer un numéro dans la voie
-- `GET` : Récupérer la liste des numéros d'une voie
+- `GET` : Récupérer les numéros d'une voie
 
 ### `/voies/{id}/batch`
-- `POST` : Modifie des voies par lot.
+
+- `POST` : Modifier les numéros d'une voie par lot
 
 ### `/numeros/{id}`
 
@@ -131,13 +132,14 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 
 ### `/toponymes/{id}`
 
-- `GET` : Retourne les informations d’un toponyme.
-- `POST` : Ajoute un toponyme.
-- `DELETE` : Supprime un toponyme.
+- `GET` : Retourne les informations d’un toponyme
+- `POST` : Ajouter un toponyme
+- `DELETE` : Supprimer un toponyme
 
 ### `/toponymes/{id}/numeros`
 
-- `GET` : Retourne les numéros d’un toponyme.
+- `GET` : Retourner les numéros d’un toponyme
+
 ## Modèles
 
 ### Champs communs
@@ -153,53 +155,56 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 | Attributs | Éditable | Commentaire |
 | --------- | -------- | ----------- |
 | nom      | ✅ | Nom de la Base Adresse Locale |
-| emails    | ✅ | Tableau devant toujours contenir au moins une valeur. |
-| token     | ❌ | Généré par l'application. Renouvelable via URL dédiée. |
+| emails    | ✅ | Tableau devant toujours contenir au moins une valeur |
+| token     | ❌ | Généré par l'application. Renouvelable via URL dédiée. (protégé) |
 | communes  | ⚠️ | Éditable via routes spécifiques |
-| enableComplement | ✅ | Active la saisie du complément de nom de voie dans l'éditeur
+| enableComplement | ✅ | Active la saisie du complément de nom de voie dans l'éditeur |
 
 ### Voie
 
 | Attributs | Éditable | Commentaire
 | --------- | -------- | -----------
-| nom       | ✅       |
-| complement | ✅      | Complément de nom de voie (nom du lieu-dit, commune déléguée…). Champ optionnel.
-| code      | ❌       | Code FANTOIR ou séquence libre (= `null` pour le moment)
-| commune   | ❌       | Référence
-| numeros   | ⚠️       | Éditable via routes spécifiques
-| positions | ✅       | Tableau avec au maximum une position pour le moment
+| nom       | ✅       | Nom de la voie |
+| complement | ✅      | Complément de nom de voie (nom du lieu-dit, commune déléguée…) (optionnel) |
+| code      | ❌       | Code FANTOIR ou séquence libre (= `null` pour le moment) |
+| commune   | ❌       | Référence |
+| numeros   | ⚠️       | Éditable via routes spécifiques |
+| typeNumerotation | ✅       | `numerique` ou `metrique` |
+| trace | ✅       | Line GeoJSON. Champ optionnel |
+| _bal | ❌ | Référence |
+
+### Toponyme
+
+| Attributs   | Éditable | Commentaire
+| ---------   | -------- | -----------
+| nom | ✅ | Nom du toponyme |
+| positions | ✅ | Tableaux des positions du toponyme |
+| parcelles | ✅ | Tableaux des parcelles du toponyme |
+| commune   | ❌       | Référence |
 | _bal | ❌ | Référence |
 
 ### Numéro
 
 | Attributs | Éditable | Commentaire
 | --------- | -------- | -----------
-| commune   | ❌       | Référence
-| voie      | ✅       | Référence (modification = déplacer le numéro dans une autre voie de la commune)
-| numero    | ✅       |`9` (Integer)
-| suffixe   | ✅       |`bis`
-| numeroComplet | ❌ | `9` + `bis` => `9bis`
-| comment | ✅ | Complément pour l’édition des adresse. Champs optionnel.
-| parcelles | ✅ | Tableau des parcelles du numéro.
-| positions | ✅       |
-| certifie | ✅ | Booléen qui précise si l’adresse est certifié par la commune ([Lien vers la documentation](https://guide.mes-adresses.data.gouv.fr/publier-une-base-adresse-locale-1/certifier-ses-adresses))
+| commune   | ❌       | Référence |
+| voie      | ✅       | Référence (modification = déplacer le numéro dans une autre voie de la commune) |
+| numero    | ✅       |`9` (Integer) |
+| suffixe   | ✅       |`bis` |
+| numeroComplet | ❌ | `9` + `bis` => `9bis` |
+| comment | ✅ | Complément pour l’édition des adresse (optionnel et protégé) |
+| parcelles | ✅ | Tableau des parcelles du numéro |
+| positions | ✅       | Tableaux des positions |
+| certifie | ✅ | Booléen qui précise si l’adresse est certifié par la commune ([Lien vers la documentation](https://guide.mes-adresses.data.gouv.fr/publier-une-base-adresse-locale-1/certifier-ses-adresses)) |
 | _bal | ❌ | Référence |
 
 ### Position
 
 | Attributs   | Éditable | Commentaire
 | ---------   | -------- | -----------
-| point | ✅       | Point GeoJSON
-| source      | ✅       | Texte libre. Optionnel
-| type        | ✅       | `entrée`, `délivrance postale`, `bâtiment`, `cage d'escalier`, `logement`, `parcelle`, `segment`, `'service technique`
-
-### Toponyme
-
-| Attributs   | Éditable | Commentaire
-| ---------   | -------- | -----------
-| nom | ✅ | Nom du toponyme
-| positions | ✅ | Tableaux des positions du toponyme
-| parcelles | ✅ | Tableaux des parcelles du toponyme
+| point | ✅       | Point GeoJSON |
+| source      | ✅       | Texte libre (optionnel) |
+| type        | ✅       | `entrée`, `délivrance postale`, `bâtiment`, `cage d'escalier`, `logement`, `parcelle`, `segment`, `'service technique` |
 
 ## Publication d'une base locale
 
