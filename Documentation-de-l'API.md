@@ -140,6 +140,12 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 
 - `GET` : Retourner les numéros d’un toponyme
 
+### `/commune/{codeCommune}`
+
+- `GET` : Retourne un objet contenant : 
+   - `hasCadastre` : Booléen permettant de savoir si la commune dispose d’un cadastre numérisé.
+   - `isCOM`  : Booléen permettant de savoir si la commune fait partie des [Collectivités d’Outre-mer](https://fr.wikipedia.org/wiki/Collectivit%C3%A9_d%27outre-mer)
+
 ## Modèles
 
 ### Champs communs
