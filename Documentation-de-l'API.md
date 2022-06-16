@@ -160,7 +160,7 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 | nom      | ✅ | Nom de la Base Adresse Locale |
 | emails    | ✅ | Tableau devant toujours contenir au moins une valeur |
 | token     | ❌ | Généré par l'application. Renouvelable via URL dédiée. (protégé) |
-| commune  | ❌ | Généré par l'application. |
+| commune  | ❌ | Renseigné lors de la création de la Base Adresse Locale. |
 | enableComplement | ✅ | Active la saisie du complément de nom de voie dans l'éditeur |
 
 ### Voie
