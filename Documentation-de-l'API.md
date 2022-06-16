@@ -4,13 +4,13 @@ Cette API a pour vocation de permettre la gestion de bases d'adresses à l'éche
 
 ## Fonctionnement général
 
-Tout d'abord l'utilisateur créé une base locale, puis il y ajoute des communes qu'il peut pré-remplir.
+Tout d'abord l'utilisateur crée une base locale. La commune est désormais obligatoire à la création.
 
 La base locale peut aussi être importée (format BAL/AITF 1.1).
 
 Ensuite il peut gérer les voies (et toponymes), les numéros et les positions associées.
 
-- Une base locale peut avoir plusieurs communes
+- Une base locale ne peut avoir qu'une seule commune
 - Une commune a plusieurs voies
 - Une voie est associée à une seule commune.
 - Une voie a plusieurs numéros (sauf les voies-toponymes)
@@ -73,35 +73,29 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 
 - `GET` : Récupérer la base locale au format CSV
 
-### `/bases-locales/{id}/communes/{codeCommune}`
-
-- `GET` : Retourne (et calcule) les informations pertinentes à l'échelle d'une commune
-- `PUT` : Ajouter une commune à la base locale
-- `DELETE` : Supprimer une commune de la base locale
-
-### `/bases-locales/{id}/communes/{codeCommune}/batch`
+### `/bases-locales/{id}/batch`
 
 - `POST` : Modifier les numéros d’une commune par lot
 
-### `/bases-locales/{id}/communes/{codeCommune}/populate`
+### `/bases-locales/{id}/populate`
 
 - `POST` : Préremplir la commune avec des adresses existantes
 
-### `/bases-locales/{id}/communes/{codeCommune}/geojson`
+### `/bases-locales/{id}/geojson`
 
 - `GET` : Retourne toutes les adresses de la commune au format GeoJSON
 
-### `/bases-locales/{id}/communes/{codeCommune}/voies`
+### `/bases-locales/{id}/voies`
 
 - `POST` : Créer une voie dans la commune
 - `GET` : Lister les voies d'une commune
 
-### `/bases-locale/{id}/communes/{id}/toponymes`
+### `/bases-locale/{id}/toponymes`
 
 - `POST` : Ajouter un toponyme
 - `GET` : Retourne les toponymes d’une base locale
 
-### `/bases-locales/{id}/communes/{id}/parcelles`
+### `/bases-locales/{id}/parcelles`
 
 - `GET` : Retourne les parcelles d’une commune
 
@@ -144,7 +138,10 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 
 - `GET` : Retourne un objet contenant : 
    - `hasCadastre` : Booléen permettant de savoir si la commune dispose d’un cadastre numérisé.
-   - `isCOM`  : Booléen permettant de savoir si la commune fait partie des [Collectivités d’Outre-mer](https://fr.wikipedia.org/wiki/Collectivit%C3%A9_d%27outre-mer)
+   - `isCOM`  : Booléen permettant de savoir si la commune fait partie des [Collectivités d’Outre-mer](https://fr.wikipedia.org/wiki/Collectivit%C3%A9_d%27outre-mer).
+   - `hasOpenMapTiles`: Booléen permettant de savoir si la commune dispose d'une carte vectorielle
+   - `hasOrtho`: Booléen permettant de savoir si la commune dispose d'une photographie aérienne
+   - `hasPlanIGN`: Booléen permettant de savoir si la commune dispose d'un plan IGN
 
 ## Modèles
 
@@ -163,7 +160,7 @@ Exemple : `Authorization: Token f66gdjfehfv66DBD`
 | nom      | ✅ | Nom de la Base Adresse Locale |
 | emails    | ✅ | Tableau devant toujours contenir au moins une valeur |
 | token     | ❌ | Généré par l'application. Renouvelable via URL dédiée. (protégé) |
-| communes  | ⚠️ | Éditable via routes spécifiques |
+| commune  | ❌ | Généré par l'application. |
 | enableComplement | ✅ | Active la saisie du complément de nom de voie dans l'éditeur |
 
 ### Voie
